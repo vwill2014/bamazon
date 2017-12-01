@@ -3,7 +3,7 @@ var inquirer = require ("inquirer");
 
 var connection = mysql.createConnection({
   host: "localhost",
-  port: 3000,
+  port: 3306,
 
   // Your username
   user: "root",
@@ -31,6 +31,7 @@ name: "action"
 }
 
 ])
+
 .then(function (data){
 if(data.action === "shoes"){
   
@@ -40,26 +41,26 @@ if(data.action === "shoes"){
     {
       type: "input",
       message:"How many shoes would you like to purchase?",
-      name:"purchaseItem"
+      name:"shoeItem"
     }
 
       ])
 
-    .then(function(input){
+    .then(function(list){
 
     var query = connection.query (
 
         "INSERT INTO products SET ?",
 
         {
-        name:input.purchaseItem,
+        name:input.shoeItem,
         },
       
         function(err){
 
           if (!err){
 
-            console.log ("You have successfully purchased your " + input.purchaseItem);
+            console.log ("You have successfully purchased your " + list.shoeItem);
 
           }
 
@@ -67,53 +68,102 @@ if(data.action === "shoes"){
         
         })
         }
+        
+    .then(function (data){
+    if(data.action === "assessories"){
+    
+      inquirer
+      .prompt([
 
-else{
-
-    function readItems(){
-
-      connection.query("SELECT * FROM products", function(err, res){
-
-        if(err) throw err;
-        for (var i = 0; i < res.length; i++){
-
-          console.log(res[i].name);
-
-        }
-
-
-      });
-
-    }
-    readItems();
-  }
-
-  }); 
-
-    inquirer
-    .prompt([
-
-    {
-      type: "input",
-      message:"What is the item you'd to submit?",
-      name:"userItem"
-    },
-
-    {
-      type: "input",
-      message:"What catogory would you like to place your action in?",
-      name:"userType"
-    }])
-
-    .then(function(){
-
-     type:"list"
-     message:"What item would you like to "
-
-
-    })
+      {
+        type: "input",
+        message:"How many assessories would you like to purchase?",
+        name:"assessItem"
       }
 
+        ])
+
+      .then(function(list){
+
+      var query = connection.query (
+
+          "INSERT INTO products SET ?",
+
+          {
+          name:list.assessItem,
+          },
+        
+          function(err){
+
+            if (!err){
+
+              console.log ("You have successfully purchased your " + list.assessItem);
+
+            }
+
+          })
+          
+          })
+          }
+        .then(function (data){
+        if(data.action === "clothing"){
+    
+      inquirer
+      .prompt([
+
+      {
+        type: "input",
+        message:"How many clothing would you like to purchase?",
+        name:"clothItem"
+      }
+
+        ])
+
+      .then(function(list){
+
+      var query = connection.query (
+
+          "INSERT INTO products SET ?",
+
+          {
+          name:list.clothItem,
+          },
+        
+          function(err){
+
+            if (!err){
+
+              console.log ("You have successfully purchased your " + list.clothItem);
+
+            }
+
+          })
+          
+          })
+          }   
+  else{
+
+      function readItems(){
+
+        connection.query("SELECT * FROM products", function(err, res){
+
+          if(err) throw err;
+          for (var i = 0; i < res.length; i++){
+
+            console.log(res[i].name);
+
+          }
+
+
+        });
+
+      }
+      readItems();
+    }
+
+    }); 
+
+   
     
 
   
